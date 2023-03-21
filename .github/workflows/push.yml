@@ -1,33 +1,37 @@
-on: push
 name: npm build, lint, test and publish
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build-and-publish:
     name: build and publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v2
       - name: npm install
-        uses: actions/npm
+        uses: actions/npm@v1
         with:
           args: install
       - name: npm test
-        uses: actions/npm
+        uses: actions/npm@v1
         with:
           args: run test
       - name: npm lint
-        uses: actions/npm
+        uses: actions/npm@v1
         with:
           args: run lint
       - name: docker build
-        uses: actions/docker/cli
+        uses: actions/docker/cli@v2
         with:
           args: build -t farahhachicha/github-action-example-node .
       - name: docker login
-        uses: actions/docker/login
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: docker push
-        uses: actions/docker/cli
+        uses: actions/docker/cli@v2
         with:
           args: push farahhachicha/github-action-example-node
