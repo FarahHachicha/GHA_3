@@ -12,15 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: npm install
-        uses: actions/npm@v1
+        uses: bahmutov/npm-install@v1
         with:
           args: install
       - name: npm test
-        uses: actions/npm@v1
+        uses: bahmutov/npm-install@v1
         with:
           args: run test
       - name: npm lint
-        uses: actions/npm@v1
+        uses: bahmutov/npm-install@v1
         with:
           args: run lint
       - name: docker build
